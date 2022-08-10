@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Stream;
 
 public class OktmoData {
     private List<Place> places = new ArrayList<>();
@@ -43,9 +44,12 @@ public class OktmoData {
     public List<Place> getPlaces() {
         return places;
     }
+
     public String findPlace(String name){
-        return places.stream().filter(place -> place.getName().equals(name)).findFirst().get().toString();
+        return places.stream().filter(place -> place.getName().equals(name)).findFirst().get().getName();
     }
 
-
+    public Stream<Place> getAllPlacecByRegion(){
+        return places.stream().collect()
+    }
 }
