@@ -32,11 +32,12 @@ public class OktmoData {
     private void readLine(String s) {
         Matcher m = RE.matcher(s);
         if (m.find()) {
-            places.add(new Place(
-                    Integer.parseInt(m.group(1)),
-                    Integer.parseInt(m.group(2)),
-                    Integer.parseInt(m.group(3)),
-                    Integer.parseInt(m.group(4)), m.group(5)
+            if(!m.group(4).equals("000"))
+                places.add(new Place(
+                        Integer.parseInt(m.group(1)),
+                        Integer.parseInt(m.group(2)),
+                        Integer.parseInt(m.group(3)),
+                        Integer.parseInt(m.group(4)), m.group(5)
                     ));
         }
     }
@@ -49,7 +50,18 @@ public class OktmoData {
         return places.stream().filter(place -> place.getName().equals(name)).findFirst().get().getName();
     }
 
-    public Stream<Place> getAllPlacecByRegion(){
-        return places.stream().collect()
+    public Stream<Place> getAllPlacesOnArea(Place place){
+        return places.stream().filter(currentPlace -> currentPlace.getCode1() == place.getCode1() &&
+                currentPlace.getCode2() == place.getCode2());
+    }
+
+    public Stream<Place> getAllPlacesByRegion(Place place){
+        return places.stream().filter(currentPlace -> currentPlace.getCode1() == place.getCode1() &&
+                currentPlace.getCode4() == place.getCode4());
+    }
+
+    public void getPlacesByUniqFilter(){
+        places.stream().filter(place -> place.getName().endsWith("ово") || place.getName().contains("-"))
+                .forEach(System.out::println);
     }
 }
