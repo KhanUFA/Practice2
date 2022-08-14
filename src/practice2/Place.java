@@ -8,11 +8,12 @@ public class Place {
     String name;
     String status;
 
-    public Place(int code1, int code2, int code3, int code4, String name) {
+    public Place(int code1, int code2, int code3, int code4, String status, String name) {
         this.code1 = code1;//Регион
         this.code2 = code2;//Район
         this.code3 = code3;//
         this.code4 = code4;
+        this.status = status;
         this.name = name;
     }
 

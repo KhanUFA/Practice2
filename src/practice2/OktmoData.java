@@ -28,17 +28,19 @@ public class OktmoData {
 
     }
 //"01";"512";"000";"146";"9";"2";"п Калиновка";;;"493";"3";12.08.2021;01.01.2022
-   private static final Pattern RE=Pattern.compile("\"(\\d+)\";\"(\\d+)\";\"(\\d+)\";\"(\\d+)\";\"([а-яА-Я].*?)\";");
+   private static final Pattern RE=Pattern.compile("\"(\\d+)\";\"(\\d+)\";\"(\\d+)\";\"(\\d+)\";.+\"([а-я]*?)\\s([А-Яа-я].*?)\"");
     private void readLine(String s) {
         Matcher m = RE.matcher(s);
         if (m.find()) {
-            if(!m.group(4).equals("000"))
+            if(!m.group(4).equals("000")) {
                 places.add(new Place(
                         Integer.parseInt(m.group(1)),
                         Integer.parseInt(m.group(2)),
                         Integer.parseInt(m.group(3)),
-                        Integer.parseInt(m.group(4)), m.group(5)
-                    ));
+                        Integer.parseInt(m.group(4)),
+                        m.group(5), m.group(6)
+                ));
+            }
         }
     }
 
@@ -60,8 +62,13 @@ public class OktmoData {
                 currentPlace.getCode4() == place.getCode4());
     }
 
-    public void getPlacesByUniqFilter(){
+    //name ends "-ово" or have "-"
+    public void getPlacesByUniqueFilter(){
         places.stream().filter(place -> place.getName().endsWith("ово") || place.getName().contains("-"))
                 .forEach(System.out::println);
+    }
+
+    public void  getRatingName(){
+
     }
 }
