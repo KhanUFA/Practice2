@@ -6,9 +6,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class OktmoData {
@@ -52,23 +54,33 @@ public class OktmoData {
         return places.stream().filter(place -> place.getName().equals(name)).findFirst().get().getName();
     }
 
-    public Stream<Place> getAllPlacesOnArea(Place place){
-        return places.stream().filter(currentPlace -> currentPlace.getCode1() == place.getCode1() &&
-                currentPlace.getCode2() == place.getCode2());
+    public Stream<Place> getAllPlacesOnDistrict(int regionNumber, int districtNumber){
+        return places.stream().filter(currentPlace -> currentPlace.getCode1() == regionNumber &&
+                currentPlace.getCode2() == districtNumber);
     }
 
-    public Stream<Place> getAllPlacesByRegion(Place place){
-        return places.stream().filter(currentPlace -> currentPlace.getCode1() == place.getCode1() &&
-                currentPlace.getCode4() == place.getCode4());
+    public Stream<Place> getAllPlacesByRegion(int regionNumber){
+        return places.stream().filter(currentPlace -> currentPlace.getCode1() == regionNumber);
     }
 
     //name ends "-ово" or have "-"
-    public void getPlacesByUniqueFilter(){
-        places.stream().filter(place -> place.getName().endsWith("ово") || place.getName().contains("-"))
-                .forEach(System.out::println);
+    public void showPlacesByUniqueFilter(){
+        List<Place> distinctPlaces = places.stream().filter(place -> place.getName().endsWith("ово") || place.getName().contains("-"))
+                .collect(Collectors.toList());
+        for (int i = 0; i < 5; i++) {
+            System.out.println(distinctPlaces.get(i).getName());
+        }
     }
 
-    public void  getRatingName(){
+    public void  getDistinctNamePlaces(){
+        List<Place> distinctPlaces = places.stream().sorted(Comparator.comparingInt(place -> place.getName().charAt(0))).distinct()
+                .collect(Collectors.toList());
+        for (int i = 0; i < 5; i++) {
+            System.out.println(distinctPlaces.get(i).getName());
+        }
+    }
+
+    public void longNameInRegion(){
 
     }
 }
